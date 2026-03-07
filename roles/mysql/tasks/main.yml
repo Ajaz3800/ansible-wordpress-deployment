@@ -1,0 +1,53 @@
+---
+- name: Update apt cache
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install MySQL Server
+  apt:
+    name: mysql-server
+    state: present
+    update_cache: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Install MySQL python dependency
+  apt:
+    name: python3-pymysql
+    state: present
+
+- name: Ensure MySQL service is running
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Create WordPress database
+  mysql_db:
+    name: "{{ wordpress_db.name }}"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Create WordPress DB user
+  mysql_user:
+    name: "{{ wordpress_db.user }}"
+    password: "{{ wordpress_db.password }}"
+    priv: "{{ wordpress_db.name }}.*:ALL"
+    host: "%"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+# - name: Allow MySQL to listen on all interfaces
+#   lineinfile:
+#     path: /etc/mysql/mysql.conf.d/mysqld.cnf
+#     regexp: '^bind-address'
+#     line: 'bind-address = 0.0.0.0'
+#     backup: yes
+#   notify: Restart MySQL
+
+# - name: Ensure MySQL service is running
+#   service:
+#     name: mysql
+#     state: started
+#     enabled: yes
