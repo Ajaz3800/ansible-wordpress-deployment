@@ -1,0 +1,20 @@
+---
+- name: Deploy Production WordPress
+  hosts: wordpress
+  become: true
+
+  roles:
+    - common
+    - security
+    - mysql
+    - php
+    - wordpress
+    - nginx
+    - ssl
+
+# - name: Deploy Production MySQL-server
+#   hosts: MySQL-server
+#   become: true
+
+#   roles:
+#     - mysql
