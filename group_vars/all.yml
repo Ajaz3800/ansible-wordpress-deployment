@@ -1,0 +1,11 @@
+domain_name: example.com
+wordpress_root: /var/www/wordpress
+
+mysql_root_password: strongpassword
+
+wordpress_db:
+  name: wordpress
+  user: wp_user
+  password: wp_password
+
+php_version: 8.2
