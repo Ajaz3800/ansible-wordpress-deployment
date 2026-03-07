@@ -1,0 +1,31 @@
+---
+
+- name: Install dependencies for repository
+  apt:
+    name:
+      - software-properties-common
+      - ca-certificates
+      - apt-transport-https
+      - lsb-release
+      - gnupg
+    state: present
+    update_cache: yes
+
+- name: Add PHP repository
+  apt_repository:
+    repo: ppa:ondrej/php
+    state: present
+    update_cache: yes
+
+- name: Install PHP
+  apt:
+    name:
+      - php{{ php_version }}-fpm
+      - php{{ php_version }}-mysql
+      - php{{ php_version }}-cli
+      - php{{ php_version }}-curl
+      - php{{ php_version }}-gd
+      - php{{ php_version }}-mbstring
+      - php{{ php_version }}-xml
+      - php{{ php_version }}-zip
+    state: present
